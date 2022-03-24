@@ -21,14 +21,13 @@ module "primary-nomad-servers" {
 
   region   = "us-east-2"
   name     = "learn-nomad-edge"
-  key_name = "tu-us-east-2"
 
   primary_security_group_id = module.primary-shared-resources.primary_security_group_id
   client_security_group_id  = module.primary-shared-resources.client_security_group_id
   public_subnets            = module.primary-shared-resources.public_subnets
   iam_instance_profile_name = module.primary-shared-resources.iam_instance_profile_name
 
-  ami                  = "ami-0fd20586d5515c81b"
+  ami                  = "ami-0a32f737ac792a047"
   server_instance_type = "t2.micro"
   server_count         = "3"
 }
@@ -38,7 +37,6 @@ module "primary-nomad-clients" {
 
   region   = "us-east-2"
   name     = "learn-nomad-edge"
-  key_name = "tu-us-east-2"
 
   primary_security_group_id = module.primary-shared-resources.primary_security_group_id
   client_security_group_id  = module.primary-shared-resources.client_security_group_id
@@ -46,19 +44,17 @@ module "primary-nomad-clients" {
   iam_instance_profile_name = module.primary-shared-resources.iam_instance_profile_name
   nomad_server_ips          = module.primary-nomad-servers.nomad_server_ips
 
-  ami                  = "ami-0fd20586d5515c81b"
+  ami                  = "ami-0a32f737ac792a047"
   client_instance_type = "t2.small"
   client_count         = 1
   nomad_dc             = "dc1"
 }
-
 
 module "edge-nomad-clients" {
   source = "./nomad-client"
 
   region   = "us-west-1"
   name     = "learn-nomad-edge"
-  key_name = "tu-us-west-1"
 
   primary_security_group_id = module.edge-shared-resources.primary_security_group_id
   client_security_group_id  = module.edge-shared-resources.client_security_group_id
@@ -66,7 +62,7 @@ module "edge-nomad-clients" {
   iam_instance_profile_name = module.edge-shared-resources.iam_instance_profile_name
   nomad_server_ips          = module.primary-nomad-servers.nomad_server_ips
 
-  ami                  = "ami-0030a4f94dd5ff275"
+  ami                  = "ami-07d4b4348adb1fcc4"
   client_instance_type = "t2.small"
   client_count         = 1
   nomad_dc             = "dc2"
@@ -76,6 +72,18 @@ output "nomad-servers" {
   value = module.primary-nomad-servers.nomad_server_ips
 }
 
+output "nomad-server" {
+  value = module.primary-nomad-servers.nomad_server_ips[0]
+}
+
 output "nomad_lb_address" {
   value = "http://${module.primary-nomad-servers.nomad_lb_address}:4646"
+}
+
+output "primary-dc-nomad-client" {
+  value = module.primary-nomad-clients.nomad_client_ips[0]
+}
+
+output "edge-dc-nomad-client" {
+  value = module.edge-nomad-clients.nomad_client_ips[0]
 }

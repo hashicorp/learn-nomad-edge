@@ -1,3 +1,5 @@
+learn-nomad-edge
+learn-nomad-edge.pub
 exp/
 .vagrant/
 aws.env/us-east/.terraform/

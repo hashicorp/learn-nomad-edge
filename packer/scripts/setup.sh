@@ -15,12 +15,36 @@ NOMADCONFIGDIR=/etc/nomad.d
 NOMADDIR=/opt/nomad
 
 # Dependencies
-sudo apt-get install -y software-properties-common
 sudo apt-get update
+sudo apt-get install -y software-properties-common
 sudo apt-get install -y unzip redis-tools jq curl tmux
 
 # Disable the firewall
 sudo ufw disable || echo "ufw not installed"
+
+# Setup sudo to allow no-password sudo for "hashicorp" group and adding "terraform" user
+sudo groupadd -r hashicorp
+sudo useradd -m -s /bin/bash terraform
+sudo usermod -a -G hashicorp terraform
+sudo cp /etc/sudoers /etc/sudoers.orig
+echo "terraform ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/terraform
+
+# Installing SSH key
+sudo mkdir -p /home/terraform/.ssh
+sudo chmod 700 /home/terraform/.ssh
+sudo cp /tmp/learn-nomad-edge.pub /home/terraform/.ssh/authorized_keys
+sudo chmod 600 /home/terraform/.ssh/authorized_keys
+sudo chown -R terraform /home/terraform/.ssh
+sudo usermod --shell /bin/bash terraform
+
+# Create GOPATH for Terraform user & download the webapp from GitHub
+
+sudo -H -i -u terraform -- env bash <<EOF
+whoami
+echo ~terraform
+
+cd /home/terraform
+EOF
 
 # Nomad
 curl -L $NOMADDOWNLOAD >nomad.zip

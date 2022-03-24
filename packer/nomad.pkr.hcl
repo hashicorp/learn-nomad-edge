@@ -16,9 +16,11 @@ variable "region-secondary" {
 data "amazon-ami" "ubuntu-primary" {
   region = var.region-primary
   filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-    root-device-type    = "ebs"
-    virtualization-type = "hvm"
+    architecture                       = "x86_64"
+    "block-device-mapping.volume-type" = "gp2"
+    name                               = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    root-device-type                   = "ebs"
+    virtualization-type                = "hvm"
   }
   most_recent = true
   owners      = ["099720109477"]
@@ -27,14 +29,15 @@ data "amazon-ami" "ubuntu-primary" {
 data "amazon-ami" "ubuntu-secondary" {
   region = var.region-secondary
   filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-    root-device-type    = "ebs"
-    virtualization-type = "hvm"
+    architecture                       = "x86_64"
+    "block-device-mapping.volume-type" = "gp2"
+    name                               = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    root-device-type                   = "ebs"
+    virtualization-type                = "hvm"
   }
   most_recent = true
   owners      = ["099720109477"]
 }
-
 
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
@@ -84,8 +87,8 @@ source "amazon-ebs" "hashistack-secondary" {
   }
 
   snapshot_tags = {
-    Name    = var.name
-    source  = "hashicorp/learn"
+    Name   = var.name
+    source = "hashicorp/learn"
   }
 }
 
@@ -100,12 +103,17 @@ build {
   }
 
   provisioner "file" {
-    destination = "/ops"
     source      = "./"
+    destination = "/ops"
+  }
+
+  provisioner "file" {
+    source      = "../learn-nomad-edge.pub"
+    destination = "/tmp/learn-nomad-edge.pub"
   }
 
   provisioner "shell" {
     environment_vars = ["INSTALL_NVIDIA_DOCKER=false"]
-    script           = "./scripts/setup.sh"
+    inline           = ["/usr/bin/cloud-init status --wait && /ops/scripts/setup.sh"]
   }
 }

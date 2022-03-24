@@ -12,11 +12,8 @@ sleep 15
 
 DOCKER_BRIDGE_IP_ADDRESS=($(ifconfig docker0 2>/dev/null | awk '/inet addr:/ {print $2}' | sed 's/addr://'))
 CLOUD=$1
-RETRY_JOIN=$2
-NOMAD_BINARY=$3
+NOMAD_BINARY=$2
 IP_ADDRESS=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
-
-sed -i "s/RETRY_JOIN/$RETRY_JOIN/g" $CONFIGDIR/nomad_client.hcl
 
 ## Replace existing Nomad binary if remote file exists
 if [[ $(wget -S --spider $NOMAD_BINARY 2>&1 | grep 'HTTP/1.1 200 OK') ]]; then

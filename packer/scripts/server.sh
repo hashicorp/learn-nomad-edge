@@ -29,6 +29,7 @@ sudo cp $CONFIGDIR/nomad.hcl $NOMADCONFIGDIR
 sudo cp $CONFIGDIR/nomad.service /etc/systemd/system/nomad.service
 sed -i "s/SERVER_COUNT/$SERVER_COUNT/g" $NOMADCONFIGDIR/nomad.hcl
 sed -i "s/RETRY_JOIN/$RETRY_JOIN/g" $NOMADCONFIGDIR/nomad.hcl
+sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" $NOMADCONFIGDIR/nomad.hcl
 
 sudo systemctl enable nomad.service
 sudo systemctl start nomad.service

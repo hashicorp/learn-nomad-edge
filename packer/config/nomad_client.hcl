@@ -13,7 +13,11 @@ client {
     node-name = "SERVER_NAME"
     service-client = "SERVICE_CLIENT"
   }
-  servers = [ RETRY_JOIN ]
+  server_join {
+    retry_join = [ RETRY_JOIN ]
+    retry_max = 5
+    retry_interval = "15s"
+  }
 }
 
 acl {

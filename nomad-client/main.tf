@@ -22,7 +22,6 @@ data "template_file" "user_data_client" {
 resource "aws_instance" "client" {
   ami           = var.ami
   instance_type = var.client_instance_type
-  key_name      = var.key_name
   vpc_security_group_ids = [
     var.primary_security_group_id,
     var.client_security_group_id,
@@ -65,7 +64,6 @@ resource "aws_instance" "client" {
 // resource "aws_instance" "targeted_client" {
 //   ami                    = var.ami
 //   instance_type          = var.targeted_client_instance_type
-//   key_name               = var.key_name
 //   vpc_security_group_ids = [aws_security_group.primary.id, aws_security_group.client_sg.id]
 //   count                  = var.targeted_client_count
 //   depends_on             = [aws_instance.server]

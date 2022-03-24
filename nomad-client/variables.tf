@@ -31,10 +31,6 @@ variable "root_block_device_size" {
   default     = 16
 }
 
-variable "key_name" {
-  description = "Name of the SSH key used to provision EC2 instances."
-}
-
 variable "client_count" {
   description = "The number of clients to provision."
   default     = "3"
