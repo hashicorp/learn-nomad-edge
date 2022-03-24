@@ -1,0 +1,14 @@
+exp/
+.vagrant/
+aws.env/us-east/.terraform/
+.terraform
+azure/
+examples/
+gcp/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+Vagrantfile
+ignore*
+nomad.token
+*.pem
