@@ -15,6 +15,7 @@ SERVER_COUNT=$2
 RETRY_JOIN=$3
 NOMAD_BINARY=$4
 IP_ADDRESS=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+PUBLIC_IP_ADDRESS=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
 
 # Nomad
 ## Replace existing Nomad binary if remote file exists
@@ -29,7 +30,7 @@ sudo cp $CONFIGDIR/nomad.hcl $NOMADCONFIGDIR
 sudo cp $CONFIGDIR/nomad.service /etc/systemd/system/nomad.service
 sed -i "s/SERVER_COUNT/$SERVER_COUNT/g" $NOMADCONFIGDIR/nomad.hcl
 sed -i "s/RETRY_JOIN/$RETRY_JOIN/g" $NOMADCONFIGDIR/nomad.hcl
-sed -i "s/IP_ADDRESS/$IP_ADDRESS/g" $NOMADCONFIGDIR/nomad.hcl
+sed -i "s/IP_ADDRESS/$PUBLIC_IP_ADDRESS/g" $NOMADCONFIGDIR/nomad.hcl
 
 sudo systemctl enable nomad.service
 sudo systemctl start nomad.service

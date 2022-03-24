@@ -27,7 +27,7 @@ module "primary-nomad-servers" {
   public_subnets            = module.primary-shared-resources.public_subnets
   iam_instance_profile_name = module.primary-shared-resources.iam_instance_profile_name
 
-  ami                  = "ami-0a32f737ac792a047"
+  ami                  = "ami-0b1f83e859ea5e03d"
   server_instance_type = "t2.micro"
   server_count         = "3"
 }
@@ -44,7 +44,7 @@ module "primary-nomad-clients" {
   iam_instance_profile_name = module.primary-shared-resources.iam_instance_profile_name
   nomad_server_ips          = module.primary-nomad-servers.nomad_server_ips
 
-  ami                  = "ami-0a32f737ac792a047"
+  ami                  = "ami-0b1f83e859ea5e03d"
   client_instance_type = "t2.small"
   client_count         = 1
   nomad_dc             = "dc1"
@@ -62,7 +62,7 @@ module "edge-nomad-clients" {
   iam_instance_profile_name = module.edge-shared-resources.iam_instance_profile_name
   nomad_server_ips          = module.primary-nomad-servers.nomad_server_ips
 
-  ami                  = "ami-07d4b4348adb1fcc4"
+  ami                  = "ami-0e246bbd2cce9a964"
   client_instance_type = "t2.small"
   client_count         = 1
   nomad_dc             = "dc2"
