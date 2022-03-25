@@ -14,7 +14,6 @@ data "template_file" "user_data_client" {
       ),
     )
     nomad_binary = var.nomad_binary
-    targeted_dc  = var.nomad_targeted_dc
     dc           = var.nomad_dc
   }
 }
@@ -23,7 +22,7 @@ resource "aws_instance" "client" {
   ami           = var.ami
   instance_type = var.client_instance_type
   vpc_security_group_ids = [
-    var.primary_security_group_id,
+    var.server_security_group_id,
     var.client_security_group_id,
   ]
   count     = var.client_count
@@ -60,42 +59,3 @@ resource "aws_instance" "client" {
     instance_metadata_tags = "enabled"
   }
 }
-
-// resource "aws_instance" "targeted_client" {
-//   ami                    = var.ami
-//   instance_type          = var.targeted_client_instance_type
-//   vpc_security_group_ids = [aws_security_group.primary.id, aws_security_group.client_sg.id]
-//   count                  = var.targeted_client_count
-//   depends_on             = [aws_instance.server]
-
-//   # instance tags
-//   tags = merge(
-//     {
-//       "Name" = "${var.name}-targeted-client-${count.index}"
-//     },
-//     {
-//       "${var.retry_join.tag_key}" = "${var.retry_join.tag_value}"
-//     },
-//   )
-
-//   root_block_device {
-//     volume_type           = "gp2"
-//     volume_size           = var.root_block_device_size
-//     delete_on_termination = "true"
-//   }
-
-//   ebs_block_device {
-//     device_name           = "/dev/xvdd"
-//     volume_type           = "gp2"
-//     volume_size           = "50"
-//     delete_on_termination = "true"
-//   }
-
-//   user_data            = data.template_file.user_data_client.rendered
-//   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
-
-//   metadata_options {
-//     http_endpoint = "enabled"
-//     instance_metadata_tags = "enabled"
-//   }
-// }

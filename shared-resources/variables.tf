@@ -5,7 +5,7 @@ variable "region" {
 
 variable "name" {
   description = "Used to name various infrastructure components"
-  default = "learn-nomad-edge"
+  default     = "learn-nomad-edge"
 }
 
 // VPC Variables

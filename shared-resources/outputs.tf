@@ -1,9 +1,5 @@
 output "public_subnets" {
-  value = module.vpc.public_subnets 
-}
-
-output "primary_security_group_id" {
-  value = aws_security_group.primary.id
+  value = module.vpc.public_subnets
 }
 
 output "server_security_group_id" {

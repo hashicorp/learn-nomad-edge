@@ -42,8 +42,8 @@ variable "nomad_binary" {
   default     = "none"
 }
 
-variable "primary_security_group_id" {
-  description = "Primary security group ID"
+variable "server_security_group_id" {
+  description = "Server security group ID"
 }
 
 variable "client_security_group_id" {

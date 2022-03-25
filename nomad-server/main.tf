@@ -21,7 +21,7 @@ data "template_file" "user_data_server" {
 resource "aws_instance" "server" {
   ami                    = var.ami
   instance_type          = var.server_instance_type
-  vpc_security_group_ids = [var.primary_security_group_id]
+  vpc_security_group_ids = [var.server_security_group_id]
   count                  = var.server_count
   subnet_id              = var.public_subnets[0]
 
@@ -63,6 +63,6 @@ resource "aws_elb" "server_lb" {
     lb_port           = 4646
     lb_protocol       = "http"
   }
-  security_groups = [var.primary_security_group_id]
+  security_groups = [var.server_security_group_id]
   subnets         = var.public_subnets
 }

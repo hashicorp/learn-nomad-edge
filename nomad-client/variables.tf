@@ -16,16 +16,6 @@ variable "client_instance_type" {
   default     = "t2.micro"
 }
 
-variable "targeted_client_instance_type" {
-  description = "The AWS instance type to use for targeted clients."
-  default     = "t2.micro"
-}
-
-variable "targeted_client_count" {
-  description = "The number of targeted clients to provision."
-  default     = "2"
-}
-
 variable "root_block_device_size" {
   description = "The volume size of the root block device."
   default     = 16
@@ -52,8 +42,8 @@ variable "nomad_binary" {
   default     = "none"
 }
 
-variable "primary_security_group_id" {
-  description = "Primary security group ID"
+variable "server_security_group_id" {
+  description = "Server security group ID"
 }
 
 variable "client_security_group_id" {
@@ -70,11 +60,6 @@ variable "iam_instance_profile_name" {
 
 variable "nomad_server_ips" {
   description = "Nomad server IP address"
-}
-
-variable "nomad_targeted_dc" {
-  description = "Targeted DC"
-  default     = "dc3"
 }
 
 variable "nomad_dc" {
