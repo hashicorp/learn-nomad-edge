@@ -1,6 +1,6 @@
 variable "name" {
   type    = string
-  default = "learn-nomad-edge-tu"
+  default = "learn-nomad-edge"
 }
 
 variable "region-primary" {
@@ -41,9 +41,9 @@ data "amazon-ami" "ubuntu-secondary" {
 
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
-source "amazon-ebs" "hashistack-primary" {
+source "amazon-ebs" "nomad-primary" {
   region                = var.region-primary
-  ami_name              = "hashistack-${local.timestamp}"
+  ami_name              = "nomad-${local.timestamp}"
   source_ami            = "${data.amazon-ami.ubuntu-primary.id}"
   instance_type         = "t2.medium"
   ssh_username          = "ubuntu"
@@ -67,9 +67,9 @@ source "amazon-ebs" "hashistack-primary" {
   }
 }
 
-source "amazon-ebs" "hashistack-secondary" {
+source "amazon-ebs" "nomad-secondary" {
   region                = var.region-secondary
-  ami_name              = "hashistack ${local.timestamp}"
+  ami_name              = "nomad ${local.timestamp}"
   source_ami            = "${data.amazon-ami.ubuntu-secondary.id}"
   instance_type         = "t2.medium"
   ssh_username          = "ubuntu"
@@ -94,8 +94,8 @@ source "amazon-ebs" "hashistack-secondary" {
 
 build {
   sources = [
-    "source.amazon-ebs.hashistack-primary",
-    "source.amazon-ebs.hashistack-secondary",
+    "source.amazon-ebs.nomad-primary",
+    "source.amazon-ebs.nomad-secondary",
   ]
 
   provisioner "shell" {

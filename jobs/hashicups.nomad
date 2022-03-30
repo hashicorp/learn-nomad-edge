@@ -47,9 +47,9 @@ job "hashicups" {
   datacenters = var.datacenters
 
   group "hashicups" {
-    spread {
-      attribute = "${node.datacenter}"
-    }
+    count = 1
+
+    max_client_disconnect = "1h"
 
     network {
       port "db" { 
