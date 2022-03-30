@@ -49,7 +49,7 @@ job "hashicups" {
   group "hashicups" {
     count = 1
 
-    max_client_disconnect = "1h"
+    // max_client_disconnect = "1h"
 
     network {
       port "db" { 
@@ -65,10 +65,11 @@ job "hashicups" {
       meta {
         service = "database"
       }
-      // service {
-      //   port     = "db"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "db"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+      }
       config {
         image   = "hashicorpdemoapp/product-api-db:${var.product_api_db_version}"
         ports = ["db"]
@@ -85,10 +86,12 @@ job "hashicups" {
       meta {
         service = "product-api"
       }
-      // service {
-      //   port     = "product-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port         = "product-api"
+        tags         = ["hashicups", "backend"]
+        provider     = "nomad"
+        address_mode = "host"
+      }
       config {
         image   = "hashicorpdemoapp/product-api:${var.product_api_version}"
         ports = ["product-api"]

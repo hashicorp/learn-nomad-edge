@@ -14,6 +14,7 @@ DOCKER_BRIDGE_IP_ADDRESS=($(ifconfig docker0 2>/dev/null | awk '/inet addr:/ {pr
 CLOUD=$1
 NOMAD_BINARY=$2
 IP_ADDRESS=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+PUBLIC_IP_ADDRESS=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
 
 ## Replace existing Nomad binary if remote file exists
 if [[ $(wget -S --spider $NOMAD_BINARY 2>&1 | grep 'HTTP/1.1 200 OK') ]]; then
@@ -25,6 +26,8 @@ fi
 
 sudo cp $CONFIGDIR/nomad-client.hcl $NOMADCONFIGDIR/nomad.hcl
 sudo cp $CONFIGDIR/nomad.service /etc/systemd/system/nomad.service
+
+sed -i "s/IP_ADDRESS/$PUBLIC_IP_ADDRESS/g" $NOMADCONFIGDIR/nomad.hcl
 
 sudo systemctl enable nomad.service
 sudo systemctl start nomad.service

@@ -72,10 +72,11 @@ job "hashicups-edge" {
       meta {
         service = "payments-api"
       }
-      // service {
-      //   port     = "payments-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "payments-api"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+      }
       config {
         image   = "hashicorpdemoapp/payments:${var.payments_version}"
         ports = ["payments-api"]
@@ -96,10 +97,11 @@ job "hashicups-edge" {
       meta {
         service = "public-api"
       }
-      // service {
-      //   port     = "public-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "public-api"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+      }
       config {
         image   = "hashicorpdemoapp/public-api:${var.public_api_version}"
         ports = ["public-api"]
@@ -117,10 +119,11 @@ job "hashicups-edge" {
       meta {
         service = "frontend"
       }
-      // service {
-      //   port     = "frontend"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "frontend"
+        tags     = ["hashicups", "frontend"]
+        provider = "nomad"
+      }
       env {
         NEXT_PUBLIC_PUBLIC_API_URL= "/"
         PORT = "${NOMAD_PORT_frontend}"
@@ -136,10 +139,11 @@ job "hashicups-edge" {
       meta {
         service = "nginx-reverse-proxy"
       }
-      // service {
-      //   port     = "nginx"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "nginx"
+        tags     = ["hashicups", "frontend"]
+        provider = "nomad"
+      }
       config {
         image = "nginx:alpine"
         ports = ["nginx"]
