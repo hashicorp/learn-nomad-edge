@@ -1,12 +1,12 @@
 agent { 
-    policy = "read"
+  policy = "read"
 } 
 
 node { 
-    policy = "read" 
+  policy = "read" 
 } 
 
 namespace "*" { 
-    policy = "read" 
-    capabilities = ["submit-job", "read-logs"] 
+  policy = "read" 
+  capabilities = ["submit-job", "read-logs"] 
 }

@@ -65,6 +65,10 @@ job "hashicups" {
       meta {
         service = "database"
       }
+      // service {
+      //   port     = "db"
+      //   provider = "nomad"
+      // }
       config {
         image   = "hashicorpdemoapp/product-api-db:${var.product_api_db_version}"
         ports = ["db"]
@@ -81,6 +85,10 @@ job "hashicups" {
       meta {
         service = "product-api"
       }
+      // service {
+      //   port     = "product-api"
+      //   provider = "nomad"
+      // }
       config {
         image   = "hashicorpdemoapp/product-api:${var.product_api_version}"
         ports = ["product-api"]

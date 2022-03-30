@@ -38,7 +38,6 @@ sudo chown -R terraform /home/terraform/.ssh
 sudo usermod --shell /bin/bash terraform
 
 # Create GOPATH for Terraform user & download the webapp from GitHub
-
 sudo -H -i -u terraform -- env bash <<EOF
 whoami
 echo ~terraform

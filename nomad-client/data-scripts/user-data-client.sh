@@ -14,7 +14,6 @@ AWS_SERVER_TAG_NAME=$(curl http://169.254.169.254/latest/meta-data/tags/instance
 sed -i "s/SERVER_NAME/$AWS_SERVER_TAG_NAME/g" $NOMAD_HCL_PATH
 
 sed -i "s/DATACENTER/${dc}/g" $NOMAD_HCL_PATH
-sed -i "s/SERVICE_CLIENT/api/g" $NOMAD_HCL_PATH
 
 # Wait for nomad servers to come up
 sleep 15
