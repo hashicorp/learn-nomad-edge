@@ -23,6 +23,9 @@ client {
     retry_max = 5
     retry_interval = "15s"
   }
+  host_network "public" {
+    cidr = "IP_ADDRESS/32"
+  }
 }
 
 acl {

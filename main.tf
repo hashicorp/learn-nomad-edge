@@ -28,7 +28,7 @@ module "primary_nomad_servers" {
   iam_instance_profile_name = module.primary_shared_resources.iam_instance_profile_name
 
   // Service Disco
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-1.3-boogie-nights/nomad.zip"
+  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
   // Client Disconnect
   // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
 
@@ -50,7 +50,7 @@ module "primary_nomad_clients" {
   nomad_server_ips          = module.primary_nomad_servers.nomad_server_ips
 
   // Service Disco
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-1.3-boogie-nights/nomad.zip"
+  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
   // Client Disconnect
   // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
 
@@ -73,7 +73,7 @@ module "edge_nomad_clients" {
   nomad_server_ips          = module.primary_nomad_servers.nomad_server_ips
 
   // Service Disco
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-1.3-boogie-nights/nomad.zip"
+  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
   // Client Disconnect
   // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
 

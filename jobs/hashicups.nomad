@@ -96,6 +96,14 @@ job "hashicups" {
         image   = "hashicorpdemoapp/product-api:${var.product_api_version}"
         ports = ["product-api"]
       }
+//       template {
+//         data        = <<EOH
+// {{ range nomadService "hashicups-hashicups-db" }}
+// DB_CONNECTION="host={{ .Address }} port={{ .Port }} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"{{ end }}
+// EOH
+//         destination = "local/env.txt"
+//         env         = true
+//       }
       env {
         DB_CONNECTION = "host=${NOMAD_IP_db} port=${NOMAD_PORT_db} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"
         BIND_ADDRESS = "0.0.0.0:${NOMAD_PORT_product-api}"

@@ -106,10 +106,19 @@ job "hashicups-edge" {
         image   = "hashicorpdemoapp/public-api:${var.public_api_version}"
         ports = ["public-api"]
       }
+      template {
+        data        = <<EOH
+{{ range nomadService "hashicups-hashicups-product-api" }}
+PRODUCT_API_URI="{{.Address}}:{{.Port}}"
+{{ end }}
+EOH
+        destination = "local/env.txt"
+        env         = true
+      }
       env {
         BIND_ADDRESS = ":${NOMAD_PORT_public-api}"
         // PRODUCT_API_URI = "http://${NOMAD_ADDR_product-api}"
-        PRODUCT_API_URI = "http://3.144.2.151:9090"
+        // PRODUCT_API_URI = "http://3.144.2.151:9090"
         PAYMENT_API_URI = "http://${NOMAD_ADDR_payments-api}"
       }
     }
