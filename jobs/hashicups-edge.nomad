@@ -76,6 +76,7 @@ job "hashicups-edge" {
         port     = "payments-api"
         tags     = ["hashicups", "backend"]
         provider = "nomad"
+        address      = attr.unique.platform.aws.public-ipv4
       }
       config {
         image   = "hashicorpdemoapp/payments:${var.payments_version}"
@@ -101,6 +102,7 @@ job "hashicups-edge" {
         port     = "public-api"
         tags     = ["hashicups", "backend"]
         provider = "nomad"
+        address      = attr.unique.platform.aws.public-ipv4
       }
       config {
         image   = "hashicorpdemoapp/public-api:${var.public_api_version}"
@@ -109,7 +111,7 @@ job "hashicups-edge" {
       template {
         data        = <<EOH
 {{ range nomadService "hashicups-hashicups-product-api" }}
-PRODUCT_API_URI="{{.Address}}:{{.Port}}"
+PRODUCT_API_URI="http://{{.Address}}:{{.Port}}"
 {{ end }}
 EOH
         destination = "local/env.txt"
@@ -117,8 +119,6 @@ EOH
       }
       env {
         BIND_ADDRESS = ":${NOMAD_PORT_public-api}"
-        // PRODUCT_API_URI = "http://${NOMAD_ADDR_product-api}"
-        // PRODUCT_API_URI = "http://3.144.2.151:9090"
         PAYMENT_API_URI = "http://${NOMAD_ADDR_payments-api}"
       }
     }
@@ -132,6 +132,7 @@ EOH
         port     = "frontend"
         tags     = ["hashicups", "frontend"]
         provider = "nomad"
+        address      = attr.unique.platform.aws.public-ipv4
       }
       env {
         NEXT_PUBLIC_PUBLIC_API_URL= "/"
@@ -152,6 +153,7 @@ EOH
         port     = "nginx"
         tags     = ["hashicups", "frontend"]
         provider = "nomad"
+        address      = attr.unique.platform.aws.public-ipv4
       }
       config {
         image = "nginx:alpine"
