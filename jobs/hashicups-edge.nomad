@@ -52,6 +52,8 @@ job "hashicups-edge" {
   datacenters = var.datacenters
 
   group "hashicups-edge" {
+    max_client_disconnect = "1h"
+
     network {
       port "frontend" {
         static = var.frontend_port
@@ -72,10 +74,12 @@ job "hashicups-edge" {
       meta {
         service = "payments-api"
       }
-      // service {
-      //   port     = "payments-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "payments-api"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+        address  = attr.unique.platform.aws.public-ipv4
+      }
       config {
         image   = "hashicorpdemoapp/payments:${var.payments_version}"
         ports = ["payments-api"]
@@ -96,18 +100,28 @@ job "hashicups-edge" {
       meta {
         service = "public-api"
       }
-      // service {
-      //   port     = "public-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "public-api"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+        address  = attr.unique.platform.aws.public-ipv4
+      }
       config {
         image   = "hashicorpdemoapp/public-api:${var.public_api_version}"
         ports = ["public-api"]
       }
+      template {
+        data        = <<EOH
+{{ range nomadService "hashicups-hashicups-product-api" }}
+  PRODUCT_API_URI="http://{{.Address}}:{{.Port}}"
+{{ end }}
+EOH
+        change_mode = "noop"
+        destination = "local/env.txt"
+        env         = true
+      }
       env {
         BIND_ADDRESS = ":${NOMAD_PORT_public-api}"
-        // PRODUCT_API_URI = "http://${NOMAD_ADDR_product-api}"
-        PRODUCT_API_URI = "http://3.144.2.151:9090"
         PAYMENT_API_URI = "http://${NOMAD_ADDR_payments-api}"
       }
     }
@@ -117,10 +131,12 @@ job "hashicups-edge" {
       meta {
         service = "frontend"
       }
-      // service {
-      //   port     = "frontend"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "frontend"
+        tags     = ["hashicups", "frontend"]
+        provider = "nomad"
+        address  = attr.unique.platform.aws.public-ipv4
+      }
       env {
         NEXT_PUBLIC_PUBLIC_API_URL= "/"
         PORT = "${NOMAD_PORT_frontend}"
@@ -136,10 +152,12 @@ job "hashicups-edge" {
       meta {
         service = "nginx-reverse-proxy"
       }
-      // service {
-      //   port     = "nginx"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "nginx"
+        tags     = ["hashicups", "frontend"]
+        provider = "nomad"
+        address  = attr.unique.platform.aws.public-ipv4
+      }
       config {
         image = "nginx:alpine"
         ports = ["nginx"]

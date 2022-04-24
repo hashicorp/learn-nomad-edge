@@ -47,10 +47,6 @@ job "hashicups" {
   datacenters = var.datacenters
 
   group "hashicups" {
-    count = 1
-
-    max_client_disconnect = "1h"
-
     network {
       port "db" { 
         static = 5432
@@ -65,10 +61,12 @@ job "hashicups" {
       meta {
         service = "database"
       }
-      // service {
-      //   port     = "db"
-      //   provider = "nomad"
-      // }
+      service {
+        port     = "db"
+        tags     = ["hashicups", "backend"]
+        provider = "nomad"
+        address  = attr.unique.platform.aws.public-ipv4
+      }
       config {
         image   = "hashicorpdemoapp/product-api-db:${var.product_api_db_version}"
         ports = ["db"]
@@ -85,13 +83,24 @@ job "hashicups" {
       meta {
         service = "product-api"
       }
-      // service {
-      //   port     = "product-api"
-      //   provider = "nomad"
-      // }
+      service {
+        port         = "product-api"
+        tags         = ["hashicups", "backend"]
+        provider     = "nomad"
+        address      = attr.unique.platform.aws.public-ipv4
+      }
       config {
         image   = "hashicorpdemoapp/product-api:${var.product_api_version}"
         ports = ["product-api"]
+      }
+      template {
+        data        = <<EOH
+{{ range nomadService "hashicups-hashicups-db" }}
+DB_CONNECTION="host={{ .Address }} port={{ .Port }} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"
+{{ end }}
+EOH
+        destination = "local/env.txt"
+        env         = true
       }
       env {
         DB_CONNECTION = "host=${NOMAD_IP_db} port=${NOMAD_PORT_db} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"
