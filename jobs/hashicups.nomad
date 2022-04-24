@@ -47,10 +47,6 @@ job "hashicups" {
   datacenters = var.datacenters
 
   group "hashicups" {
-    count = 1
-
-    // max_client_disconnect = "1h"
-
     network {
       port "db" { 
         static = 5432
@@ -100,7 +96,8 @@ job "hashicups" {
       template {
         data        = <<EOH
 {{ range nomadService "hashicups-hashicups-db" }}
-DB_CONNECTION="host={{ .Address }} port={{ .Port }} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"{{ end }}
+DB_CONNECTION="host={{ .Address }} port={{ .Port }} user=${var.postgres_user} password=${var.postgres_password} dbname=${var.postgres_db} sslmode=disable"
+{{ end }}
 EOH
         destination = "local/env.txt"
         env         = true
