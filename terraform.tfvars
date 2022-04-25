@@ -1,2 +1,2 @@
-primary_ami = "ami-09e9653ec7ab29518"
-edge_ami    = "ami-0e994cae21cf7151b"
+primary_ami = "REPLACE_WITH_BUILD_AMI_ID"
+edge_ami    = "REPLACE_WITH_BUILD_EDGE_AMI_ID"
