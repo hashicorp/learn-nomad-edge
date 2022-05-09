@@ -27,13 +27,6 @@ module "primary_nomad_servers" {
   public_subnets            = module.primary_shared_resources.public_subnets
   iam_instance_profile_name = module.primary_shared_resources.iam_instance_profile_name
 
-  // v1.3
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/1.3/nomad.zip"
-  // Service Disco
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
-  // Client Disconnect
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
-
   ami                  = var.primary_ami
   server_instance_type = "t2.micro"
   server_count         = 3
@@ -50,13 +43,6 @@ module "primary_nomad_clients" {
   public_subnets            = module.primary_shared_resources.public_subnets
   iam_instance_profile_name = module.primary_shared_resources.iam_instance_profile_name
   nomad_server_ips          = module.primary_nomad_servers.nomad_server_ips
-
-  // v1.3
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/1.3/nomad.zip"
-  // Service Disco
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
-  // Client Disconnect
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
 
   ami                  = var.primary_ami
   client_instance_type = "t2.small"
@@ -75,13 +61,6 @@ module "edge_nomad_clients" {
   public_subnets            = module.edge_shared_resources.public_subnets
   iam_instance_profile_name = module.edge_shared_resources.iam_instance_profile_name
   nomad_server_ips          = module.primary_nomad_servers.nomad_server_ips
-
-  // v1.3
-  nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/1.3/nomad.zip"
-  // // Service Disco
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-gh-268-dialer/nomad.zip"
-  // Client Disconnect
-  // nomad_binary = "https://github.com/im2nguyen/nomad-binaries/raw/main/f-disconnected-client-allocation-handling/nomad.zip"
 
   ami                  = var.edge_ami
   client_instance_type = "t2.small"
