@@ -9,7 +9,7 @@ cd /ops
 
 CONFIGDIR=/ops/config
 
-NOMADVERSION=1.3.0
+NOMADVERSION=1.5.3
 NOMADDOWNLOAD=https://releases.hashicorp.com/nomad/${NOMADVERSION}/nomad_${NOMADVERSION}_linux_amd64.zip
 NOMADCONFIGDIR=/etc/nomad.d
 NOMADDIR=/opt/nomad
