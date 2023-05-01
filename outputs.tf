@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 output "nomad_servers" {
   value = module.primary_nomad_servers.nomad_server_ips
 }
